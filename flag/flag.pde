@@ -11,6 +11,8 @@ ArrayList<Spring> springs;
 Vec3D wind=new Vec3D(0,0,0);
 AABB world=new AABB(400);
 float w=5*resolution;
+Vec3D attachPoint1;
+Vec3D attachPoint2;
 
 VerletPhysics physics;
 PImage background;
@@ -59,9 +61,11 @@ void setup(){
       }
     }
   }
+  // set attach points
   particles[0][0].lock();
-  //particles[0][(rows-1)/2].lock();
   particles[0][rows-1].lock();
+  attachPoint1=new Vec3D(particles[0][0].x,particles[0][0].y,particles[0][0].z);
+  attachPoint2=new Vec3D(particles[0][rows-1].x,particles[0][rows-1].y,particles[0][rows-1].z);
   
   texture=loadImage("flag.jpg");
 }
@@ -94,15 +98,7 @@ void draw(){
       float windnoiseZ=noise(xoff+2000,yoff+2000)*0.5;
       //particles[i][j].display();
       particles[i][j].clearForce();
-      /*
-      //Attempt to add scrapple effect
-      if(wind.dot(wind)>9){
-        if(physics.getSpring(particles[i][j],particles[i+1][j])!=null)
-          physics.removeSpring(physics.getSpring(particles[i][j],particles[i+1][j]));
-      }
-      else
-        particles[i][j].addForce(wind);
-      */
+    
       //Blow off the flag if wind is too strong
       if(wind.dot(wind)>9){
         particles[0][0].unlock();
@@ -146,6 +142,7 @@ void draw(){
 }
 
 void keyPressed() {
+  // Controls the direction of the major wind
   if (keyCode == LEFT) {
     wind=wind.add(-1,0,0);
   }
@@ -164,6 +161,8 @@ void keyPressed() {
   if (keyCode == ENTER) {
     wind=wind.add(0,-0.2,0);
   }
+  
+  // Tear the flag apart
   if (keyCode == ALT){
     println("tearing");
     for(int n=0;n<rows-1;n++){
@@ -177,6 +176,8 @@ void keyPressed() {
        }
     }
   }
+  
+  // make random holes on the flag
   if (keyCode == CONTROL){
     println("breaking");
     int xk=int(random(1,rows-6));
@@ -196,14 +197,22 @@ void keyPressed() {
       }  
     }
   }
+  
   println(wind);
 }
 
 void mouseDragged() 
 {
-  for(int i=-5;i<6;i++){
-    particles[cols/2+i][rows/2+i].x=mouseX;
-    particles[cols/2+i][rows/2+i].y=mouseY;
+  float topy=-rows*w/2;
+  
+  println("lower flag");
+  //println(topy,mouseY-400,particles[0][0].y);
+  if(mouseY-600>topy){
+    Vec3D newap1=attachPoint1.add(0,(mouseY-400),0);
+    Vec3D newap2=attachPoint2.add(0,(mouseY-400),0);
+    particles[0][0].set(newap1);
+    particles[0][rows-1].set(newap2);
+    particles[0][0].update();
+    particles[0][rows-1].update();
   }
-  println(mouseX,mouseY);
 }

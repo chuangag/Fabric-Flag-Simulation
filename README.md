@@ -13,3 +13,4 @@
 - SHIFT: blow the wind downward
 - ALT: tear the flag apart
 - CTRL: create random holes on the flag
+- Drag the flag up and down by mouse
