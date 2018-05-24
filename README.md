@@ -1,7 +1,7 @@
 # Flag/Fabric Simulation
 ### This is a course prject for DH2323 Computer Graphics and Interaction at KTH in 2018 spring semester. 
 ## Demo 
-### https://www.youtube.com/watch?v=UGmv_hmBfwo.
+### https://www.youtube.com/watch?v=TK8Q2x4UwLY
 ## Blog Post
 ### https://chuangag.blogspot.se/2018/05/physical-based-flagfabric-simulation.html
 ## The Key used to interact with the program:
